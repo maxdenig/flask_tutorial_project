@@ -1,10 +1,11 @@
 from flask.views import MethodView
+from flask_jwt_extended import get_jwt, jwt_required
 from flask_smorest import Blueprint, abort
-from flask_jwt_extended import jwt_required, get_jwt
+from sqlalchemy.exc import SQLAlchemyError
+
+from db import db
 from models import ItemModel
 from schemas import ItemSchema, ItemUpdatedSchema
-from sqlalchemy.exc import SQLAlchemyError
-from db import db
 
 bp = Blueprint("items", __name__, description="Operations for Items")
 

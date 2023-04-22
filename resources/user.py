@@ -1,12 +1,14 @@
 from flask.views import MethodView
+from flask_jwt_extended import (create_access_token, create_refresh_token,
+                                get_jwt, get_jwt_identity, jwt_required)
 from flask_smorest import Blueprint, abort
+from passlib.hash import pbkdf2_sha256 as hash_alg
+from sqlalchemy.exc import SQLAlchemyError
+
+from blocklist import BLOCKLIST
+from db import db
 from models import UserModel
 from schemas import UserSchema
-from sqlalchemy.exc import SQLAlchemyError
-from db import db
-from passlib.hash import pbkdf2_sha256 as hash_alg
-from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required, get_jwt
-from blocklist import BLOCKLIST
 
 bp = Blueprint("users", __name__, description="Operations for Users")
 

@@ -1,5 +1,6 @@
 from marshmallow import Schema, fields
 
+
 # Plain Schemas
 class PlainItemSchema(Schema):
     id = fields.Int(dump_only=True)

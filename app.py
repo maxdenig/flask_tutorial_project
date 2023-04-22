@@ -1,11 +1,13 @@
 import os
-from db import db
+
 from flask import Flask, jsonify
-from flask_smorest import Api
-from resources import StoreBp, ItemBp, TagBp, UserBp
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from flask_smorest import Api
+
 from blocklist import BLOCKLIST
+from db import db
+from resources import ItemBp, StoreBp, TagBp, UserBp
 
 # docker run -dp 5001:5000 -w /app -v "/c/repo/flask_api:/app" flask-sqlalchemy
 

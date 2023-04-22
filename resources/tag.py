@@ -1,10 +1,11 @@
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint, abort
-from models import StoreModel, TagModel, ItemModel
-from schemas import TagSchema, TagAndItemSchema
-from db import db
 from sqlalchemy.exc import SQLAlchemyError
+
+from db import db
+from models import ItemModel, StoreModel, TagModel
+from schemas import TagAndItemSchema, TagSchema
 
 bp = Blueprint("tags", __name__, description="Operations for Tags")
 
