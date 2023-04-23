@@ -94,6 +94,9 @@ def create_app(db_url=None):
     ## DB INITIALIZATION ##
     db.init_app(app)
 
+    with app.app_context():
+        db.create_all()
+
     ## MIGRRATION INITIALIZATION ##
     migrate = Migrate(app, db)
 
