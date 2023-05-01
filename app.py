@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from flask_smorest import Api
+from dotenv import load_dotenv
 
 from blocklist import BLOCKLIST
 from db import db
@@ -13,6 +14,7 @@ from resources import ItemBp, StoreBp, TagBp, UserBp
 
 def create_app(db_url=None):
     app = Flask(__name__)
+    load_dotenv()
 
     ## APP CONFIGS ##
     app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -22,8 +24,8 @@ def create_app(db_url=None):
     app.config["OPENAPI_URL_PREFIX"] = "/"
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
     app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    #app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_url or "sqlite:///data.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
+    #app.config["SQLALCHEMY_DATABASE_URI"] = db_url or "sqlite:///data.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     ## JWT ##
@@ -94,8 +96,8 @@ def create_app(db_url=None):
     ## DB INITIALIZATION ##
     db.init_app(app)
 
-    with app.app_context():
-        db.create_all()
+    #with app.app_context():
+    #    db.create_all()
 
     ## MIGRRATION INITIALIZATION ##
     migrate = Migrate(app, db)
