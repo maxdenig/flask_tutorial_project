@@ -7,3 +7,4 @@ flask-migrate
 passlib
 gunicorn
 psycopg2
+requests
