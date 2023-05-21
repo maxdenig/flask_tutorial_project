@@ -23,7 +23,7 @@ def send_simple_message(to, subj, body):
     return requests.post(
 		f"https://api.mailgun.net/v3/{domain}/messages",
 		auth=("api", api_key),
-		data={"from": "Excited User <mailgun@YOUR_DOMAIN_NAME>",
+		data={"from": f"Excited User <mailgun@{domain}>",
 			"to": [to],
 			"subject": subj,
 			"text": body})
@@ -74,7 +74,7 @@ class UserRegister(MethodView):
             db.session.commit()
             send_simple_message(
                 to=user.email,
-                subject="Successfully registered",
+                subj="Successfully registered",
                 body=f"Hello {user.username}, you have been successfully registered."
             )
         except SQLAlchemyError as e:
