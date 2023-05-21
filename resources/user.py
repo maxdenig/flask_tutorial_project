@@ -74,7 +74,7 @@ class UserRegister(MethodView):
             db.session.commit()
             send_simple_message(
                 to=user.email,
-                subject="Successfully registered",
+                subj="Successfully registered",
                 body=f"Hello {user.username}, you have been successfully registered."
             )
         except SQLAlchemyError as e:
