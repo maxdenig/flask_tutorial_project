@@ -46,11 +46,11 @@ class User(MethodView):
 
 @bp.route("/user")
 class UserRegister(MethodView):
-    @bp.response(200, UserRegisterSchema(many=True))
+    @bp.response(200, UserSchema(many=True))
     def get(self):
         return UserModel.query.all()
     
-    @bp.arguments(UserSchema)
+    @bp.arguments(UserRegisterSchema)
     @bp.response(201, 
                  description="User created successfully.",
                  example="User created successfully.")
