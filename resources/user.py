@@ -1,6 +1,5 @@
-import os
 
-import requests
+from flask import current_app
 from flask.views import MethodView
 from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 get_jwt, get_jwt_identity, jwt_required)
@@ -61,10 +60,11 @@ class UserRegister(MethodView):
         try:
             db.session.add(user)
             db.session.commit()
-            send_user_registration_message(
-                email=user.email,
-                username=user.username
-                )
+            current_app.queue.enqueue(
+                send_user_registration_message,
+                user.email,
+                user.username
+            )
         except SQLAlchemyError as e:
             abort(500, message=str(e))
         return {"message": "User created successfully."}

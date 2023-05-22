@@ -22,5 +22,5 @@ def send_user_registration_message(email, username):
     return send_simple_message(
         email,
         "Successfully registered",
-        f"Hello {user.username}, you have been successfully registered."
+        f"Hello {username}, you have been successfully registered."
         )
