@@ -1,5 +1,4 @@
 import os
-from sqlalchemy import or_
 
 import requests
 from flask.views import MethodView
@@ -7,26 +6,16 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 get_jwt, get_jwt_identity, jwt_required)
 from flask_smorest import Blueprint, abort
 from passlib.hash import pbkdf2_sha256 as hash_alg
+from sqlalchemy import or_
 from sqlalchemy.exc import SQLAlchemyError
 
 from blocklist import BLOCKLIST
 from db import db
 from models import UserModel
-from schemas import UserSchema, UserRegisterSchema
+from schemas import UserRegisterSchema, UserSchema
+from tasks import send_user_registration_message
 
 bp = Blueprint("users", __name__, description="Operations for Users")
-
-
-def send_simple_message(to, subj, body):
-    domain = os.getenv("MAILGUN_DOMAIN")
-    api_key = os.getenv("MAILGUN_API_KEY")
-    return requests.post(
-		f"https://api.mailgun.net/v3/{domain}/messages",
-		auth=("api", api_key),
-		data={"from": f"Excited User <mailgun@{domain}>",
-			"to": [to],
-			"subject": subj,
-			"text": body})
 
 
 @bp.route("/user/<int:user_id>")
@@ -72,11 +61,10 @@ class UserRegister(MethodView):
         try:
             db.session.add(user)
             db.session.commit()
-            send_simple_message(
-                to=user.email,
-                subj="Successfully registered",
-                body=f"Hello {user.username}, you have been successfully registered."
-            )
+            send_user_registration_message(
+                email=user.email,
+                username=user.username
+                )
         except SQLAlchemyError as e:
             abort(500, message=str(e))
         return {"message": "User created successfully."}
