@@ -23,7 +23,7 @@ def create_app(db_url=None):
         os.getenv("REDIS_URL")
     )
     app.queue = Queue("emails", connection=connection)
-    
+
     ## APP CONFIGS ##
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Stores REST API"
